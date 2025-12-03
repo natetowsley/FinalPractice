@@ -21,8 +21,15 @@ const pool = mysql.createPool({
 });
 
 //routes
-app.get('/', (req, res) => {
-   res.send('Hello Express app!')
+app.get('/', async (req, res) => {
+    
+    let sql = `SELECT *
+              FROM fe_comics
+              ORDER BY RAND() 
+              LIMIT 1`;
+    const [randomComic] = await pool.query(sql);
+    console.log(randomComic);
+    res.render('home.ejs', {randomComic});
 });
 
 app.get("/dbTest", async(req, res) => {
